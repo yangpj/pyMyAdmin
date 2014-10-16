@@ -1,0 +1,58 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+<h3> 数据库 <a href="/db/{{db}}">{{db}}</a> » 表 {{tbl}}</h3>
+
+<div>
+    <a href="#">字段</a>
+    <ul>
+        {% for item, type in cols %}
+        <li>
+            <a href="#">{{ item }}</a>
+            <span>{{type}}</span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% if cons | length > 0 %}
+<div>
+    <a href="#">约束</a>
+    <ul>
+        {% for item in cons %}
+        <li><a href="#">{{ item }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if indexes | length > 0 %}
+<div>
+    <a href="#">索引</a>
+    <ul>
+        {% for item in indexes %}
+        <li><a href="#">{{ item }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if result is defined %}
+<div>
+    <span>记录行数：{{result | length}}</span>
+    <table>
+        <tbody>
+            {% for record in result %}
+            <tr>
+                {% for item in record %}
+                <td>{{item | string}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+{% endblock %}
