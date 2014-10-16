@@ -45,9 +45,6 @@
     <Folder Include="FlaskWebProject2\templates\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FlaskWebProject2\static\content\jquery-ui.css" />
-    <Content Include="FlaskWebProject2\static\content\jquery-ui.min.css" />
-    <Content Include="FlaskWebProject2\static\content\jquery-ui.theme.min.css" />
     <Content Include="FlaskWebProject2\static\content\table.css">
       <SubType>Code</SubType>
     </Content>

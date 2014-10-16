@@ -3,10 +3,11 @@
 {% block content %}
 
 
-<h1>测试版本</h1>
+<h1>数据库</h1>
 <a href="/db/SZVTSMIS_SERVER">SZVTSMIS_SERVER</a>
 
 {% for item in tbls %}
 <li><a href="/db/{{db}}/{{item}}">{{ item }}</a></li>
 {% endfor %}
+
 {% endblock %}

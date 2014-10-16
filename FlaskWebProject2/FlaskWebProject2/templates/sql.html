@@ -2,23 +2,21 @@
 
 {% block content %}
 
-<form action="#" method="POST">
-    <h3> 执行SQL命令 <em style="color:red;">危险功能，请谨慎使用</em></h3>
-    <textarea name="sql_cmd" cols="80" onsubmit="return true;"></textarea>
-    <input type="submit" />
-</form>
-
-{% if nrows is defined %}
+{% if previous_sql is defined %}
 <div>
-    <span>查询结果：{{result | length}}</span>
+    <form role="form" action="#" method="POST">
+        <div class="form-group">
+            <label for="name"> 执行SQL命令 <em style="color:red;">危险功能，请谨慎使用</em></label>
+            <textarea class="form-control" name="sql_cmd" rows="3" onsubmit="return true;">{{previous_sql}}</textarea>
+            <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+    </form>
 </div>
-{% endif %}
 
 {% if result is defined %}
-<div>
-    <span>查询结果：{{result | length}}</span>
-    <table>
-        <tbody>
+<span>记录行数： {{result | length}}</span>
+<table class="table table-striped table-hover table-bordered">
+    <tbody>
         {% for record in result %}
         <tr>
             {% for item in record %}
@@ -26,9 +24,25 @@
             {% endfor %}
         </tr>
         {% endfor %}
-        </tbody>
-    </table>
-</div>
+    </tbody>
+</table>
 {% endif %}
 
-{% endblock %}
+{% if nrows is defined %}
+<span>结果： {{nrows}}</span>
+{% endif %}
+
+{% else %}
+
+<div>
+    <form role="form" action="#" method="POST">
+        <div class="form-group">
+            <label for="name"> 执行SQL命令 <em style="color:red;">危险功能，请谨慎使用</em></label>
+            <textarea class="form-control" name="sql_cmd" rows="3" onsubmit="return true;"></textarea>
+            <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+    </form>
+</div>
+    {% endif %}
+
+    {% endblock %}

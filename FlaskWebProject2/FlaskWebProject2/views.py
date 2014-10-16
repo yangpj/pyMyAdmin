@@ -9,7 +9,6 @@ from FlaskWebProject2 import app
 from models import *
 
 @app.route('/')
-@app.route('/home')
 def home():
     """Renders the home page."""
     return render_template(
@@ -29,14 +28,16 @@ def sql():
                 'sql.html',
                 title=u'SQL工具',
                 year=datetime.now().year,
-                result=r,
+                previous_sql=request.form['sql_cmd'],
+                result=r
             )
         else:
             return render_template(
                 'sql.html',
                 title=u'SQL工具',
                 year=datetime.now().year,
-                nrows=r,
+                previous_sql=request.form['sql_cmd'],
+                nrows=r
             )
     else:
         return render_template(
