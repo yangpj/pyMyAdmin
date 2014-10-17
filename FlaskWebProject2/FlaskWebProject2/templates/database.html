@@ -2,10 +2,27 @@
 
 {% block content %}
 
-<h2>数据库 {{db}}</h2>
-
-{% for item in tbls %}
-<li><a href="/db/{{db}}/{{item}}">{{ item }}</a></li>
-{% endfor %}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <a href="/db/SZVTSMIS_SERVER">SZVTSMIS_SERVER</a> 数据表 ({{tbls | length}})
+        </h3>
+    </div>
+    <div class="panel-body">
+        <ul class="list-group">
+            {% for item, descr in tbls %}
+            <li class="list-group-item">
+                <h4>
+                    {% if descr | length > 0 %}
+                        <a href="/db/{{db}}/{{item}}">{{item}} - {{descr[0][0]}}</a>
+                    {% else %}
+                        <a href="/db/{{db}}/{{item}}">{{item}}</a>
+                    {% endif %}
+                </h4>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 
 {% endblock %}

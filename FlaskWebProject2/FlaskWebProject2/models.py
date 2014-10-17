@@ -5,6 +5,12 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session, interfaces
 from sqlalchemy.ext.automap import generate_relationship
 
+class G:
+    db = None
+
+connstr = "postgresql+psycopg2://postgres:postgres@d.w:5432/%s" % 'SZVTSMIS_SERVER'
+ENGINE = create_engine(connstr)
+
 def _gen_relationship(base, direction, return_fn, attrname, local_cls, referred_cls, **kw):
     if direction is interfaces.ONETOMANY:
         kw['cascade'] = ''
@@ -14,28 +20,22 @@ def _gen_relationship(base, direction, return_fn, attrname, local_cls, referred_
         return generate_relationship(base, direction, return_fn,
                                      attrname, local_cls, referred_cls, **kw)
 
+def connect_db():
+    return ENGINE.connect()
+
 def get_all_table_objects(db_name):
-    connstr = "postgresql+psycopg2://postgres:postgres@172.16.1.166:5432/%s" % db_name
-    engine = create_engine(connstr)
     metadata = MetaData()
-    metadata.reflect(engine)
+    metadata.reflect(ENGINE)
     base = automap_base()
-    base.prepare(engine, reflect=True, generate_relationship=_gen_relationship)
+    base.prepare(ENGINE, reflect=True, generate_relationship=_gen_relationship)
     return base.classes
 
 def execute_raw_sql(db_name, sql_stmt):
-    connstr = "postgresql+psycopg2://postgres:postgres@172.16.1.166:5432/%s" % db_name
-    engine = create_engine(connstr)
-    result = engine.execute(sql_stmt)
+    result = ENGINE.execute(sql_stmt)
     if result.closed is not True:
         return result.fetchall()
     else:
         return result.rowcount
-
-def execute_raw_sql2(db_name, sql_stmt):
-    connstr = "postgresql+psycopg2://postgres:postgres@172.16.1.166:5432/%s" % db_name
-    engine = create_engine(connstr)
-    return engine.execute(sql_stmt)
 
 def find_table_object_by_name(tables, tbl_name):
     name = tbl_name.encode('utf8')
@@ -44,13 +44,18 @@ def find_table_object_by_name(tables, tbl_name):
             return i
     return None
 
+def get_table_description(tbl_name):
+    tn = tbl_name.encode('utf-8')
+    qs = "select description from pg_description join pg_class on pg_description.objoid = pg_class.oid where relname = %r" % tn
+    result = G.db.execute(qs)
+    return result.fetchall()
+
 #=> [str]
 def get_all_table_names(db_name):
     tables = get_all_table_objects(db_name)
     tn = []
     for i in tables:
         tn.append(i.__table__.name)
-    tn.sort()
     return tn
 
 #=> [str]
@@ -94,12 +99,10 @@ from FlaskWebProject2 import app
 
 @app.before_request
 def before_request():
-    #g.db = connect_db()
-    pass
+    G.db = connect_db()
 
 @app.teardown_request
 def teardown_request(exception):
-    pass
-    #db = getattr(g, 'db', None)
-    #if db is not None:
-    #    db.close()
+    db = getattr(G, 'db', None)
+    if db is not None:
+        db.close()

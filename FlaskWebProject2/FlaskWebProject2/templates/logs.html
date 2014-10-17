@@ -1,0 +1,38 @@
+﻿{% extends "layout.html" %}
+
+{% block head %}
+
+{{ super() }}
+
+<!-- 语法高亮 -->
+<script type="text/javascript" src="/static/scripts/shCore.js"></script>
+<script type="text/javascript" src="/static/scripts/shBrushJava.js"></script>
+<link href="/static/content/shCore.css" rel="stylesheet" type="text/css" />
+<link href="/static/content/shThemeDefault.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    SyntaxHighlighter.all()
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+{% if log_names is defined %}
+
+<ul>
+{% for item in log_names %}
+<li>
+    <a href="/logs/{{item}}">{{item}}</a>
+</li>
+{% endfor %}
+</ul>
+
+{% elif log_content is defined %}
+
+<h3>{{log_name}}</h3>
+<pre class="brush: java">{{log_content}}</pre>
+
+{% endif %}
+
+{% endblock %}

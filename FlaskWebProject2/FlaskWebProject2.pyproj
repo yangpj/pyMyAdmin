@@ -51,6 +51,9 @@
     <Content Include="FlaskWebProject2\templates\database.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="FlaskWebProject2\templates\logs.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="FlaskWebProject2\templates\sql.html">
       <SubType>Code</SubType>
     </Content>

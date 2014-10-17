@@ -3,14 +3,20 @@
 {% block content %}
 
 {% if previous_sql is defined %}
-<div>
-    <form role="form" action="#" method="POST">
-        <div class="form-group">
-            <label for="name"> 执行SQL命令 <em style="color:red;">危险功能，请谨慎使用</em></label>
-            <textarea class="form-control" name="sql_cmd" rows="3" onsubmit="return true;">{{previous_sql}}</textarea>
-            <button type="submit" class="btn btn-primary">提交</button>
-        </div>
-    </form>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">SQl 查询</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form" action="#" method="POST">
+            <div class="form-group">
+                <label for="name"> 输入 SQL 命令： </label>
+                <textarea class="form-control" name="sql_cmd" rows="3" onsubmit="return true;">{{previous_sql}}</textarea>
+                <button type="submit" class="btn btn-primary">执行</button><em style="color:red;">（危险功能，请谨慎使用）</em>
+            </div>
+        </form>
+    </div>
 </div>
 
 {% if result is defined %}
@@ -34,15 +40,21 @@
 
 {% else %}
 
-<div>
-    <form role="form" action="#" method="POST">
-        <div class="form-group">
-            <label for="name"> 执行SQL命令 <em style="color:red;">危险功能，请谨慎使用</em></label>
-            <textarea class="form-control" name="sql_cmd" rows="3" onsubmit="return true;"></textarea>
-            <button type="submit" class="btn btn-primary">提交</button>
-        </div>
-    </form>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">SQL 查询</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form" action="#" method="POST">
+            <div class="form-group">
+                <label for="name"> 输入 SQL 命令： </label>
+                <textarea class="form-control" name="sql_cmd" rows="3" onsubmit="return true;"></textarea>
+                <button type="submit" class="btn btn-primary">执行</button><em style="color:red;">（危险功能，请谨慎使用）</em>
+            </div>
+        </form>
+    </div>
 </div>
-    {% endif %}
 
-    {% endblock %}
+{% endif %}
+
+{% endblock %}
