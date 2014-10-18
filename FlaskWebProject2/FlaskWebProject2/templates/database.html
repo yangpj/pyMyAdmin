@@ -5,18 +5,18 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">
-            <a href="/db/SZVTSMIS_SERVER">SZVTSMIS_SERVER</a> 数据表 ({{tbls | length}})
+            <a href="/db/{{db_name}}">{{db_name}}</a> 数据表 ({{tbls | length}})
         </h3>
     </div>
     <div class="panel-body">
-        <ul class="list-group">
+        <ul>
             {% for item, descr in tbls %}
-            <li class="list-group-item">
+            <li>
                 <h4>
                     {% if descr | length > 0 %}
-                        <a href="/db/{{db}}/{{item}}">{{item}} - {{descr[0][0]}}</a>
+                    <a href="/db/{{db_name}}/{{item}}">{{item}} - {{descr[0][0]}}</a>
                     {% else %}
-                        <a href="/db/{{db}}/{{item}}">{{item}}</a>
+                    <a href="/db/{{db_name}}/{{item}}">{{item}}</a>
                     {% endif %}
                 </h4>
             </li>

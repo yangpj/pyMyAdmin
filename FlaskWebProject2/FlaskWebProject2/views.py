@@ -11,7 +11,7 @@ from models import *
 @app.route('/')
 def home():
     """Renders the home page."""
-    ts=get_all_table_names('SZVTSMIS_SERVER')
+    ts=get_all_table_names()
     ts.sort()
     ds = []
     for item in ts:
@@ -21,7 +21,7 @@ def home():
         'index.html',
         title=u'主页',
         year=datetime.now().year,
-        db='SZVTSMIS_SERVER',
+        db_name='SZVTSMIS_SERVER',
         tbls=zip(ts, ds)
     )
 
@@ -59,33 +59,31 @@ def logs_detail(log_name):
 @app.route('/sql', methods=['GET', 'POST'])
 def sql():
     if request.method == 'POST':
-        r = execute_raw_sql("SZVTSMIS_SERVER", request.form['sql_cmd'])
-        if isinstance(r, list):
+        query = request.form['sql_cmd']
+        if query:
+            result = execute_raw_sql2(query)
+            rs = []
+            if result.returns_rows:
+                rs = result.fetchall()
             return render_template(
                 'sql.html',
                 title=u'SQL工具',
                 year=datetime.now().year,
-                previous_sql=request.form['sql_cmd'],
-                result=r
+                previous_sql=query,
+                resultSet=rs,
+                keys=result.keys(),
+                nrows=result.rowcount
             )
-        else:
-            return render_template(
-                'sql.html',
-                title=u'SQL工具',
-                year=datetime.now().year,
-                previous_sql=request.form['sql_cmd'],
-                nrows=r
-            )
-    else:
-        return render_template(
-            'sql.html',
-            title=u'SQL工具',
-            year=datetime.now().year,
-        )
+    return render_template(
+        'sql.html',
+        title=u'SQL工具',
+        year=datetime.now().year,
+        previous_sql=''
+    )
 
 @app.route('/db/<database>')
 def database(database):
-    ts=get_all_table_names(database)
+    ts=get_all_table_names()
     ts.sort()
     ds = []
     for item in ts:
@@ -95,27 +93,29 @@ def database(database):
         'database.html',
         title=u'数据库',
         year=datetime.now().year,
-        db=database,
+        db_name=database,
         tbls=zip(ts, ds),
     )
 
 @app.route('/db/<database>/<table>')
 def table(database, table):
     descr = get_table_description(table)
-    tos = get_all_table_objects(database)
-    to = find_table_object_by_name(tos, table)
+    result = execute_raw_sql2("select * from %s" % table)
+    rs = []
+    if result.returns_rows:
+        rs = result.fetchall()
     return render_template(
         'table.html',
         title=u'数据表',
         year=datetime.now().year,
         db=database,
         tbl=table,
-        result=execute_raw_sql(database, "select * from %s" % table),
+        resultSet=rs,
         tbl_descr=descr,
         cols_descr=descr[1:],
-        cols=zip(get_all_column_names(to), get_all_column_types(to)),
-        cons=get_table_constraints(to),
-        indexes=get_table_indexes(to)
+        cols=zip(get_all_column_names(table), get_all_column_types(table)),
+        cons=get_table_constraints(table),
+        indexes=get_table_indexes(table)
     )
 
 @app.route('/contact')

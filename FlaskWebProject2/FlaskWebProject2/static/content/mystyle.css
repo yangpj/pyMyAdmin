@@ -1,0 +1,14 @@
+.x table th {
+	background-color: #dedede;
+}
+
+.x table td {
+	/*background-color: #bfff00;*/
+}
+
+.db-table li {
+    /*padding-left: 35px;*/
+    list-style-type: none;
+    /*background: #fefefe url('/static/content/images/db_table_li_icon1.png') no-repeat;*/
+}
+

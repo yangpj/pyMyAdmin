@@ -8,8 +8,11 @@ from sqlalchemy.ext.automap import generate_relationship
 class G:
     db = None
 
+#connstr = "postgresql+psycopg2://postgres:dev@localhost:5432/%s" % 'pyMyAdmin'
 connstr = "postgresql+psycopg2://postgres:postgres@d.w:5432/%s" % 'SZVTSMIS_SERVER'
 ENGINE = create_engine(connstr)
+METADATA = MetaData()
+METADATA.reflect(ENGINE)
 
 def _gen_relationship(base, direction, return_fn, attrname, local_cls, referred_cls, **kw):
     if direction is interfaces.ONETOMANY:
@@ -23,19 +26,28 @@ def _gen_relationship(base, direction, return_fn, attrname, local_cls, referred_
 def connect_db():
     return ENGINE.connect()
 
-def get_all_table_objects(db_name):
+def get_all_table_objects():
     metadata = MetaData()
     metadata.reflect(ENGINE)
     base = automap_base()
     base.prepare(ENGINE, reflect=True, generate_relationship=_gen_relationship)
     return base.classes
 
-def execute_raw_sql(db_name, sql_stmt):
-    result = ENGINE.execute(sql_stmt)
-    if result.closed is not True:
-        return result.fetchall()
+def execute_raw_sql(sql_stmt):
+    if sql_stmt:
+        result = ENGINE.execute(sql_stmt)
+        if result.returns_rows:
+            return result.fetchall()
+        else:
+            return result.rowcount
     else:
-        return result.rowcount
+        return None
+
+def execute_raw_sql2(sql_stmt):
+    result = None
+    if sql_stmt:
+        result = ENGINE.execute(sql_stmt)
+    return result
 
 def find_table_object_by_name(tables, tbl_name):
     name = tbl_name.encode('utf8')
@@ -51,43 +63,30 @@ def get_table_description(tbl_name):
     return result.fetchall()
 
 #=> [str]
-def get_all_table_names(db_name):
-    tables = get_all_table_objects(db_name)
-    tn = []
-    for i in tables:
-        tn.append(i.__table__.name)
-    return tn
+def get_all_table_names():
+    return METADATA.tables.keys()
 
 #=> [str]
-def get_all_column_names(tbl_obj):
-    cn = []
-    for x in tbl_obj.__table__.columns:
-        cn.append(x.name)
-    return cn
+def get_all_column_names(tbl_name):
+    return METADATA.tables[tbl_name].columns.keys()
 
-def get_all_column_types(tbl_obj):
-    cn = []
-    for x in tbl_obj.__table__.columns:
-        cn.append(str(x.type))
-    return cn
+def get_all_column_types(tbl_name):
+    cols = METADATA.tables[tbl_name].columns
+    return [str(item.type) for item in cols]
 
-#=> [str]
-def get_table_constraints(tbl_obj):
-    sc = []
-    for x in tbl_obj.__table__.constraints:
-        sc.append(str(x))
-    return sc
+#=> 返回约束名的列表
+def get_table_constraints(tbl_name):
+    cons = METADATA.tables[tbl_name].constraints
+    return [i.name for i in cons]
 
 #=> [str]
-def get_table_indexes(tbl_obj):
-    ix = []
-    for x in tbl_obj.__table__.indexes:
-        ix.append(str(x))
-    return ix
+def get_table_indexes(tbl_name):
+    indexes = METADATA.tables[tbl_name].indexes
+    return [i.name for i in indexes]
 
 #=> [str]
 def get_all_foreign_keys_names(db_name, tbl_name):
-    tables = get_all_table_objects(db_name)
+    tables = get_all_table_objects()
     t = find_table_by_name(tables, tbl_name)
     assert t is not None
     fkn = []

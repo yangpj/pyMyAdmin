@@ -16,7 +16,7 @@
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
-    <li class="active"><a href="#records" role="tab" data-toggle="tab">数据 ({{result | length}})</a></li>
+    <li class="active"><a href="#records" role="tab" data-toggle="tab">数据 ({{resultSet | length}})</a></li>
     <li><a href="#fields" role="tab" data-toggle="tab">字段 ({{cols | length}})</a></li>
     <li><a href="#constrains" role="tab" data-toggle="tab">约束 ({{cons | length}})</a></li>
     <li><a href="#indexes" role="tab" data-toggle="tab">索引 ({{indexes | length}})</a></li>
@@ -25,7 +25,7 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div class="tab-pane active" id="records">
-        {% if result is defined %}
+        {% if resultSet is defined %}
         <div style="margin-top: 5px;">
             <table class="table table-striped table-hover table-bordered">
                 <thead>
@@ -41,7 +41,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for record in result %}
+                    {% for record in resultSet %}
                     <tr>
                         {% for item in record %}
                         <td>{{item | string}}</td>
