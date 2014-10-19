@@ -52,7 +52,7 @@ def logs():
 @app.route('/logs/<log_name>')
 def logs_detail(log_name):
     """查看Tomcat服务器日志"""
-    import os, glob
+    import os
     root = os.environ['CATALINA_HOME']
     fullpath = "%s\logs\%s" % (root, log_name)
     f = open(fullpath, 'r')

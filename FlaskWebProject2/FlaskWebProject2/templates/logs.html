@@ -1,21 +1,5 @@
 ﻿{% extends "layout.html" %}
 
-{% block head %}
-
-{{ super() }}
-
-<!-- 语法高亮 -->
-<script type="text/javascript" src="/static/scripts/shCore.js"></script>
-<script type="text/javascript" src="/static/scripts/shBrushJava.js"></script>
-<link href="/static/content/shCore.css" rel="stylesheet" type="text/css" />
-<link href="/static/content/shThemeDefault.css" rel="stylesheet" type="text/css" />
-
-<script type="text/javascript">
-    SyntaxHighlighter.all()
-</script>
-
-{% endblock %}
-
 {% block content %}
 
 {% if log_names is defined %}
@@ -37,5 +21,18 @@
 <pre class="brush: java">{{log_content}}</pre>
 
 {% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+
+<!-- 语法高亮 -->
+<script type="text/javascript" src="/static/scripts/shCore.js"></script>
+<script type="text/javascript" src="/static/scripts/shBrushJava.js"></script>
+<link href="/static/content/shCore.css" rel="stylesheet" type="text/css" />
+<link href="/static/content/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+    SyntaxHighlighter.all()
+</script>
 
 {% endblock %}
