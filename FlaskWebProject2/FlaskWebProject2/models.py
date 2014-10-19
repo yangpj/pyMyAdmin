@@ -49,17 +49,10 @@ def execute_raw_sql2(sql_stmt):
         result = ENGINE.execute(sql_stmt)
     return result
 
-def find_table_object_by_name(tables, tbl_name):
-    name = tbl_name.encode('utf8')
-    for i in tables:
-        if i.__table__.name == name:
-            return i
-    return None
-
 def get_table_description(tbl_name):
     tn = tbl_name.encode('utf-8')
     qs = "select description from pg_description join pg_class on pg_description.objoid = pg_class.oid where relname = %r" % tn
-    result = G.db.execute(qs)
+    result = ENGINE.execute(qs)
     return result.fetchall()
 
 #=> [str]
@@ -77,7 +70,7 @@ def get_all_column_types(tbl_name):
 #=> 返回约束名的列表
 def get_table_constraints(tbl_name):
     cons = METADATA.tables[tbl_name].constraints
-    return [i.name for i in cons]
+    return [i.name for i in cons if i.name != '_unnamed_']
 
 #=> [str]
 def get_table_indexes(tbl_name):
@@ -94,14 +87,14 @@ def get_all_foreign_keys_names(db_name, tbl_name):
         fkn.append(x.name)
     return fkn
 
-from FlaskWebProject2 import app
+#from FlaskWebProject2 import app
 
-@app.before_request
-def before_request():
-    G.db = connect_db()
+#@app.before_request
+#def before_request():
+#    G.db = connect_db()
 
-@app.teardown_request
-def teardown_request(exception):
-    db = getattr(G, 'db', None)
-    if db is not None:
-        db.close()
+#@app.teardown_request
+#def teardown_request(exception):
+#    db = getattr(G, 'db', None)
+#    if db is not None:
+#        db.close()

@@ -29,6 +29,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="FlaskWebProject2\controller.py" />
+    <Compile Include="FlaskWebProject2\login.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="FlaskWebProject2\models.py">
       <SubType>Code</SubType>
     </Compile>
@@ -45,13 +48,20 @@
     <Folder Include="FlaskWebProject2\templates\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FlaskWebProject2\static\content\table.css">
+    <Content Include="FlaskWebProject2\static\content\shCore.css" />
+    <Content Include="FlaskWebProject2\static\content\shThemeDefault.css" />
+    <Content Include="FlaskWebProject2\static\content\mystyle.css">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="FlaskWebProject2\static\scripts\shBrushJava.js" />
+    <Content Include="FlaskWebProject2\static\scripts\shCore.js" />
     <Content Include="FlaskWebProject2\templates\database.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="FlaskWebProject2\templates\logs.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="FlaskWebProject2\templates\login.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="FlaskWebProject2\templates\sql.html">

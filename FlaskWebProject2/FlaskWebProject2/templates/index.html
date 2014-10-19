@@ -1,28 +1,8 @@
 ﻿{% extends "layout.html" %}
 
 {% block content %}
-
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            <a href="/db/{{db_name}}">{{db_name}}</a> 数据表 ({{tbls | length}})
-        </h3>
-    </div>
-    <div class="panel-body">
-        <ul class="db-table">
-            {% for item, descr in tbls %}
-            <li>
-                <h4>
-                    {% if descr | length > 0 %}
-                    <a href="/db/{{db_name}}/{{item}}">{{item}} - {{descr[0][0]}}</a>
-                    {% else %}
-                    <a href="/db/{{db_name}}/{{item}}">{{item}}</a>
-                    {% endif %}
-                </h4>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
+<h3>
+    当前数据库 <a href="/db/SZVTSMIS_SERVER">{{db_name}}</a>
+</h3>
 
 {% endblock %}

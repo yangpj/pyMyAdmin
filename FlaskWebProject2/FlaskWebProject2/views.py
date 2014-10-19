@@ -6,6 +6,8 @@ Routes and views for the flask application.
 from datetime import datetime
 from flask import render_template, request, redirect, url_for
 from FlaskWebProject2 import app
+from FlaskWebProject2 import login
+from flask.ext.login import login_required
 from models import *
 
 @app.route('/')
@@ -23,6 +25,14 @@ def home():
         year=datetime.now().year,
         db_name='SZVTSMIS_SERVER',
         tbls=zip(ts, ds)
+    )
+
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    return render_template(
+        'login.html',
+        title=u'登录',
+        year=datetime.now().year,
     )
 
 @app.route('/logs')
@@ -57,6 +67,7 @@ def logs_detail(log_name):
     )
 
 @app.route('/sql', methods=['GET', 'POST'])
+@login_required
 def sql():
     if request.method == 'POST':
         query = request.form['sql_cmd']

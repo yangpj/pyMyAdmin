@@ -9,8 +9,7 @@
     <div class="panel-body">
         <form role="form" action="#" method="POST">
             <div class="form-group">
-                <label for="name"> 输入 SQL 命令： </label>
-                <textarea class="form-control" name="sql_cmd" rows="3" onsubmit="return true;">{{previous_sql}}</textarea>
+                <textarea class="form-control input-block-level" placeholder="输入 SQL 语句" name="sql_cmd" rows="3" onsubmit="return true;">{{previous_sql}}</textarea>
                 <button type="submit" class="btn btn-primary">执行</button><em style="color:red;"></em>
             </div>
         </form>
