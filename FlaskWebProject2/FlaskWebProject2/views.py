@@ -5,12 +5,16 @@ Routes and views for the flask application.
 
 from datetime import datetime
 from flask import render_template, request, redirect, url_for
+from flask.ext.login import login_required, login_user, logout_user, current_user
+
 from FlaskWebProject2 import app
-from FlaskWebProject2 import login
-from flask.ext.login import login_required
+from FlaskWebProject2 import users
 from models import *
 
+import jinja2
+
 @app.route('/')
+@app.route('/index')
 def home():
     """Renders the home page."""
     ts=get_all_table_names()
@@ -29,11 +33,22 @@ def home():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    if request.method == 'POST' and request.form['user_name'] == 'admin':
+        # login and validate the user...
+        login_user(users.User())
+        #flash("Logged in successfully.")
+        return redirect(request.args.get("next") or url_for("home"))
     return render_template(
         'login.html',
         title=u'登录',
         year=datetime.now().year,
     )
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
 
 @app.route('/logs')
 def logs():

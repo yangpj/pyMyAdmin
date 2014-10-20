@@ -22,12 +22,17 @@
                 <a href="/" class="navbar-brand">pyMyAdmin</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav pull-left">
                     <li><a href="{{ url_for('sql') }}">SQL工具</a></li>
                     <li><a href="{{ url_for('logs') }}">日志工具</a></li>
                     <li><a href="{{ url_for('about') }}">关于</a></li>
                     <li><a href="{{ url_for('contact') }}">开发者</a></li>
                 </ul>
+                {% if current_user.is_authenticated() %}
+                <ul class="nav navbar-nav pull-right"><li><a href="{{ url_for('logout') }}">退出</a></li></ul>
+                {% else %}
+                <ul class="nav navbar-nav pull-right"><li><a href="{{ url_for('login') }}">用户登录</a></li></ul>
+                {% endif %}
             </div>
         </div>
     </div>
