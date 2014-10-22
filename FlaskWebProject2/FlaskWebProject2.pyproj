@@ -18,6 +18,7 @@
     <PythonWsgiHandler>$(MSBuildProjectName).app</PythonWsgiHandler>
     <Name>FlaskWebProject2</Name>
     <RootNamespace>FlaskWebProject2</RootNamespace>
+    <NameOfLastUsedPublishProfile>testproject</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,7 +30,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="FlaskWebProject2\controller.py" />
-    <Compile Include="FlaskWebProject2\login.py">
+    <Compile Include="FlaskWebProject2\template_decorator.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FlaskWebProject2\users.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FlaskWebProject2\models.py">
@@ -56,6 +60,9 @@
     <Content Include="FlaskWebProject2\static\scripts\shBrushJava.js" />
     <Content Include="FlaskWebProject2\static\scripts\shCore.js" />
     <Content Include="FlaskWebProject2\templates\database.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="FlaskWebProject2\templates\login_dialog.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="FlaskWebProject2\templates\logs.html">
@@ -97,6 +104,7 @@
     <Content Include="FlaskWebProject2\templates\contact.html" />
     <Content Include="FlaskWebProject2\templates\index.html" />
     <Content Include="FlaskWebProject2\templates\layout.html" />
+    <None Include="testproject.pubxml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 
