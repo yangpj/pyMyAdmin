@@ -6,6 +6,14 @@ import win32service
 import win32event
 import servicemanager
 import socket
+import multiprocessing
+
+def run_server():
+    from os import environ
+    from FlaskWebProject2 import app
+    app.run("0.0.0.0", 8088)
+
+server = multiprocessing.Process(target=run_server)
 
 class AppServerSvc(win32serviceutil.ServiceFramework):
     _svc_name_ = "Flask Web Server"
@@ -19,22 +27,14 @@ class AppServerSvc(win32serviceutil.ServiceFramework):
     def SvcStop(self):
         self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
         win32event.SetEvent(self.hWaitStop)
-        
+        server.terminate()
+
     def SvcDoRun(self):
         servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
                               servicemanager.PYS_SERVICE_STARTED,
                               (self._svc_name_, ''))
-        run_server()
-
-def run_server():
-    from os import environ
-    from FlaskWebProject2 import app
-    #HOST = environ.get('SERVER_HOST', 'localhost')
-    #try:
-    #    PORT = int(environ.get('SERVER_PORT', '5555'))
-    #except ValueError:
-    #    PORT = 5555
-    app.run("0.0.0.0", 8088)
+        server.start()
+        server.join()
 
 if __name__ == '__main__':
     win32serviceutil.HandleCommandLine(AppServerSvc)
