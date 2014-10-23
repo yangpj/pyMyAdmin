@@ -1,5 +1,58 @@
 ﻿{% extends "layout.html" %}
 
+{% block scripts %}
+
+<script type="text/javascript">
+    var W3CDOM = (document.getElementsByTagName && document.createElement);
+
+    function writeError(target, message) {
+        validForm = false;
+        if (target.hasError) return;
+        
+        if (W3CDOM) {
+            target.className += ' error';
+            target.onchange = removeError;
+            var sp = document.createElement('span');
+            sp.className = 'error';
+            sp.style.color = 'red';
+            sp.appendChild(document.createTextNode(message));
+            target.parentNode.appendChild(sp);
+            target.hasError = sp;
+        }
+        else {
+            errorstring += target.name + ': ' + message + '\n';
+            target.hasError = true;
+        }
+        
+        if (!firstError)
+            firstError = target;
+    }
+
+    function removeError() {
+        this.className = this.className.substring(0, this.className.lastIndexOf(' '));
+        this.parentNode.removeChild(this.hasError);
+        this.hasError = null;
+        this.onchange = null;
+    }
+
+    function validateField(theForm) {
+        validForm = true;
+        firstError = null;
+        errorstring = '没有错误';
+        if (theForm["sql_cmd"].value.length == 0)
+            writeError(theForm["sql_cmd"], "请输入有效的 SQL 命令");
+        if (!W3CDOM)
+            alert(errorstring);
+        if (firstError)
+            firstError.focus();
+        //if (validForm)
+        //    alert('All data is valid!');
+        return validForm;
+    }
+</script>
+
+{% endblock %}
+
 {% block content %}
 
 <div class="panel panel-primary">
@@ -7,9 +60,10 @@
         <h3 class="panel-title">SQL 查询</h3>
     </div>
     <div class="panel-body">
-        <form role="form" action="#" method="POST">
+        <form role="form" method="POST" onsubmit="return validateField(this);">
             <div class="form-group">
-                <textarea class="form-control input-block-level" placeholder="输入 SQL 语句" name="sql_cmd" rows="3" onsubmit="return true;">{{previous_sql}}</textarea>
+                <textarea name="sql_cmd" class="form-control input-block-level" rows="3"
+                          placeholder="输入 SQL 语句">{{previous_sql}}</textarea>
                 <button type="submit" class="btn btn-primary">执行</button><em style="color:red;"></em>
             </div>
         </form>
