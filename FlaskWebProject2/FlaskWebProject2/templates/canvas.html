@@ -1,0 +1,41 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>HTML5 Canvas</title>
+    <style>
+        <!--
+        body {
+            background: #dddddd;
+        }
+        a {
+            text-decoration: none !important;
+        }
+        #canvas {
+            float:left;
+            margin: 10px;
+            padding: 10px;
+            background: cornflowerblue;
+            border: thin inset #aaaaaa;
+        }
+        #description {
+            float:left;
+            margin: 10px;
+            padding: 10px;
+        }
+        -->
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="800" height="600">Canvas not supported</canvas>
+    <div id="description">
+        描述信息:
+        <p>画布宽度: 800</p>
+        <p>画布高度: 600</p>
+        <a href="#" onclick="downloadCanvas(this);">下载当前画布</a>
+    </div>
+    <script src="/static/scripts/canvas.js"></script>
+</body>
+
+</html>

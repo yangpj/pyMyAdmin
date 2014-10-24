@@ -120,7 +120,7 @@ def contact():
     )
 
 @app.route('/about')
-@templated('about.html')
+@templated('canvas.html')
 def about():
     """Renders the about page."""
     return dict(

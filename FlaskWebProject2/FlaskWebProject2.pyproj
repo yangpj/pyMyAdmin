@@ -57,8 +57,14 @@
     <Content Include="FlaskWebProject2\static\content\mystyle.css">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="FlaskWebProject2\static\scripts\canvas.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="FlaskWebProject2\static\scripts\shBrushJava.js" />
     <Content Include="FlaskWebProject2\static\scripts\shCore.js" />
+    <Content Include="FlaskWebProject2\templates\canvas.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="FlaskWebProject2\templates\database.html">
       <SubType>Code</SubType>
     </Content>
