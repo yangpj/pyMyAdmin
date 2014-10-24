@@ -29,9 +29,19 @@
                     <li><a href="{{ url_for('contact') }}">开发者</a></li>
                 </ul>
                 {% if current_user.is_authenticated() %}
-                <ul class="nav navbar-nav pull-right"><li><a href="{{ url_for('logout') }}">退出</a></li></ul>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav pull-right">
+                        <li><a href="#" title="{{current_user.get_id()}}">{{current_user.get_id()}}（管理员）</a></li>
+                        <li><a href="{{url_for('logout')}}">退出</a></li>
+                    </ul>
+                </div>
                 {% else %}
-                <ul class="nav navbar-nav pull-right"><li><a href="{{ url_for('login') }}">用户登录</a></li></ul>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav pull-right">
+                        <li><a title="游客">游客</a></li>
+                        <li><a href="{{ url_for('login') }}">登录</a></li>
+                    </ul>
+                </div>
                 {% endif %}
             </div>
         </div>

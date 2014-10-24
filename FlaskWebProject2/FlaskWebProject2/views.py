@@ -10,6 +10,7 @@ from FlaskWebProject2 import app, users
 from template_decorator import templated
 from models import *
 
+
 @app.route('/')
 @app.route('/index')
 @templated('index.html')
@@ -26,11 +27,15 @@ def home():
 @app.route('/login', methods=["GET", "POST"])
 @templated('login.html')
 def login():
-    if request.method == 'POST' and request.form['user_name'] == 'admin':
-        # login and validate the user...
-        login_user(users.User())
-        #flash("Logged in successfully.")
-        return redirect(request.args.get("next") or url_for("home"))
+    """login and validate the user"""
+    if request.method == 'POST':
+        username = request.form['user_name']
+        if username == 'admin':
+            user = users.User(request.form['user_name'])
+            users.loginUserList[username] = user
+            login_user(user)
+            #flash("Logged in successfully.")
+            return redirect(request.args.get("next") or url_for("home"))
     return dict(title=u'登录')
 
 @app.route("/logout")
@@ -63,7 +68,6 @@ def logs_detail(log_name):
 
 @app.route('/sql', methods=['GET', 'POST'])
 @templated('sql.html')
-@login_required
 def sql():
     if request.method == 'POST':
         query = request.form['sql_cmd']
@@ -121,6 +125,7 @@ def contact():
 
 @app.route('/about')
 @templated('canvas.html')
+@login_required
 def about():
     """Renders the about page."""
     return dict(

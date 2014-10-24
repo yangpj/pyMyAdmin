@@ -14,6 +14,10 @@ login_manager.login_view = "login"
 login_manager.login_message = "Please replace this login message."
 
 class User(UserMixin):
+    def __init__(self, userid):
+        super(User, self).__init__()
+        self.userid = userid
+
     def is_authenticated(self):
         return True
 
@@ -24,8 +28,10 @@ class User(UserMixin):
         return False
 
     def get_id(self):
-        return u'admins'
+        return self.userid
+
+loginUserList = {}
 
 @login_manager.user_loader
 def load_user(userid):
-    return User()
+    return loginUserList.get(userid, None)

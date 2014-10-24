@@ -2,6 +2,47 @@
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 
+var sprite = createImageSprite("/static/content/res/zs_001041_Attack_02_0005.png");
+
+
+canvas.addEventListener('mousedown', OnMouseDown);
+canvas.addEventListener('mousemove', OnMouseMove);
+//canvas.addEventListener('mousedown', OnMouseDown);
+
+function OnMouseDown(e) {
+    console.log(e);
+}
+
+function OnMouseMove(e) {
+    //e.preventDefault();
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    drawBackground("Hello Canvas");
+    var o = document.getElementById("mouse-pos");
+    var pos = windowToCanvas(e.clientX, e.clientY);
+    o.innerText = "x: " + pos.x + ", " + "y: " + pos.y;
+    drawSprite();
+    
+    //console.log(e);
+}
+
+function windowToCanvas(x, y) {
+    var bbox = canvas.getBoundingClientRect();
+    // 包围盒的大小不一定等于画布大小，所以需要缩放
+    return {x : x - bbox.left * (canvas.width / bbox.width),
+            y : y - bbox.top * (canvas.height / bbox.height)};
+}
+
+function createImageSprite(url) {
+    var sp = new Image();
+    sp.src = url;
+    sp.onload = drawSprite;
+    return sp;
+}
+
+function drawSprite() {
+    context.drawImage(sprite, 0 + 0.5, 0 + 0.5);
+}
+
 /* NOTE: This code don't work with IE */
 function downloadCanvas(theLink) {
     theLink.href = document.getElementById("canvas").toDataURL();
@@ -19,53 +60,28 @@ function drawCircle(x, y, redius, fill) {
     }
 }
 
-function drawText(text) {
+function drawBackground(text) {
 
-    console.log("画布宽度：" + context.canvas.width);
-    console.log("画布高度：" + context.canvas.height);
+    // 圆形
+    drawCircle(130, 130, 100, true);
 
-    // assign gradients to fill
+    // 文本
+    context.font = "40pt 微软雅黑";
+    context.fillText(text, 400, 300);
+}
+
+function initContext() {
     context.fillStyle = 'red'
     context.strokeStyle = 'white';
-
-    //context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-
-    // 渐变效果
-    //var lingrad = context.createLinearGradient(0, 1, 0.3, 0.3);
-    //lingrad.addColorStop(0, '#500772');
-    //lingrad.addColorStop(1, '#20f7ff');
-
-    // Rotation
-    //context.rotate(5 * Math.PI / 180);
-
-    drawCircle(120, 120, 100, true);
-
-    //context.save();
-    //context.fillStyle = 'green';
-    //context.fillRect(0, 0, context.canvas.width, context.canvas.height);
-    //context.restore();
-    // draw shapes
-    //context.fillRect(100, 150, 130, 130);
-
     // shadow
     context.shadowColor = '#200772';
     context.shadowOffsetX = 2;
     context.shadowOffsetY = 6;
     context.shadowBlur = 10;
-
-    // 文本
-    context.font = "40pt 微软雅黑";
-    context.fillText(text, 400, 300);
-
-    //context.shadowColor = '#ff00ff';
-    //context.shadowOffsetX = 6;
-    //context.shadowOffsetY = 2;
-    //context.shadowBlur = 4;
-    //context.rotate(-10 * Math.PI / 180);
-    //context.strokeText(text, 50, 150);
 }
 
-drawText("Hello Canvas");
+initContext();
+drawBackground("Hello Canvas");
 
 /*
  *----------------------------------------------------------------------
