@@ -59,11 +59,12 @@ def logs():
 def logs_detail(log_name):
     """查看Tomcat服务器日志"""
     import os
-    root = os.environ['CATALINA_HOME']
-    fullpath = "%s\logs\%s" % (root, log_name)
-    f = open(fullpath, 'r')
-    t = f.read().decode('gb2312')
-    f.close()
+    t = ""
+    root = os.environ.get('CATALINA_HOME', None)
+    if root is not None:
+        fullpath = "%s\logs\%s" % (root, log_name)
+        with open(fullpath, 'r') as f:
+            t = f.read().decode('gb2312')
     return dict(title=u'日志工具', log_name=log_name,log_content=t)
 
 @app.route('/sql', methods=['GET', 'POST'])

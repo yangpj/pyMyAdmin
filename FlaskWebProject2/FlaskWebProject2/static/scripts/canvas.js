@@ -1,7 +1,7 @@
 ﻿/* declare global variables here */
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
-
+var mousePos = document.getElementById("mouse-pos");
 var sprite = createImageSprite("/static/content/res/zs_001041_Attack_02_0005.png");
 
 
@@ -17,9 +17,10 @@ function OnMouseMove(e) {
     //e.preventDefault();
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     drawBackground("Hello Canvas");
-    var o = document.getElementById("mouse-pos");
-    var pos = windowToCanvas(e.clientX, e.clientY);
-    o.innerText = "x: " + pos.x + ", " + "y: " + pos.y;
+    if (mousePos) {
+        var pos = windowToCanvas(e.clientX, e.clientY);
+        mousePos.innerText = "x: " + pos.x + ", " + "y: " + pos.y;
+    }
     drawSprite();
     
     //console.log(e);
@@ -27,7 +28,7 @@ function OnMouseMove(e) {
 
 function windowToCanvas(x, y) {
     var bbox = canvas.getBoundingClientRect();
-    // 包围盒的大小不一定等于画布大小，所以需要缩放
+    // 包围盒的大小不一定等于画布大小，可能需要缩放
     return {x : x - bbox.left * (canvas.width / bbox.width),
             y : y - bbox.top * (canvas.height / bbox.height)};
 }
@@ -45,7 +46,7 @@ function drawSprite() {
 
 /* NOTE: This code don't work with IE */
 function downloadCanvas(theLink) {
-    theLink.href = document.getElementById("canvas").toDataURL();
+    theLink.href = canvas.toDataURL();
     theLink.download = 'canvas.png';
     return true;
 }
@@ -61,7 +62,6 @@ function drawCircle(x, y, redius, fill) {
 }
 
 function drawBackground(text) {
-
     // 圆形
     drawCircle(130, 130, 100, true);
 
