@@ -17,7 +17,7 @@ server = multiprocessing.Process(target=run_server)
 
 class AppServerSvc(win32serviceutil.ServiceFramework):
     _svc_name_ = "ZhiChenHaiXin"
-    _svc_display_name_ = u"置辰海信数据库管理工具"
+    _svc_display_name_ = u"数据库管理工具"
 
     def __init__(self,args):
         win32serviceutil.ServiceFramework.__init__(self,args)
